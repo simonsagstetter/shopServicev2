@@ -1,9 +1,18 @@
+import lombok.RequiredArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
+@RequiredArgsConstructor
 public class ShopService {
     private ProductRepo productRepo = new ProductRepo();
     private OrderRepo orderRepo = new OrderMapRepo();
+
+    public ShopService( ProductRepo productRepo, OrderRepo orderRepo ) {
+        this.productRepo = productRepo;
+        this.orderRepo = orderRepo;
+    }
 
     public Order addOrder( List<String> productIds ) throws ProductNotFoundException {
 
