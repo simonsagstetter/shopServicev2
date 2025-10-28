@@ -17,8 +17,8 @@ class ProductRepoTest {
 
         //THEN
         List<Product> expected = new ArrayList<>();
-        expected.add(new Product("1", "Apfel"));
-        assertEquals(actual, expected);
+        expected.add( new Product( "1", "Apfel" ) );
+        assertEquals( actual, expected );
     }
 
     @org.junit.jupiter.api.Test
@@ -27,26 +27,26 @@ class ProductRepoTest {
         ProductRepo repo = new ProductRepo();
 
         //WHEN
-        Product actual = repo.getProductById("1");
+        Product actual = repo.getProductById( "1" ).orElse( null );
 
         //THEN
-        Product expected = new Product("1", "Apfel");
-        assertEquals(actual, expected);
+        Product expected = new Product( "1", "Apfel" );
+        assertEquals( actual, expected );
     }
 
     @org.junit.jupiter.api.Test
     void addProduct() {
         //GIVEN
         ProductRepo repo = new ProductRepo();
-        Product newProduct = new Product("2", "Banane");
+        Product newProduct = new Product( "2", "Banane" );
 
         //WHEN
-        Product actual = repo.addProduct(newProduct);
+        Product actual = repo.addProduct( newProduct );
 
         //THEN
-        Product expected = new Product("2", "Banane");
-        assertEquals(actual, expected);
-        assertEquals(repo.getProductById("2"), expected);
+        Product expected = new Product( "2", "Banane" );
+        assertEquals( actual, expected );
+        assertEquals( repo.getProductById( "2" ).orElse( null ), expected );
     }
 
     @org.junit.jupiter.api.Test
@@ -55,9 +55,9 @@ class ProductRepoTest {
         ProductRepo repo = new ProductRepo();
 
         //WHEN
-        repo.removeProduct("1");
+        repo.removeProduct( "1" );
 
         //THEN
-        assertNull(repo.getProductById("1"));
+        assertNull( repo.getProductById( "1" ).orElse( null ) );
     }
 }
