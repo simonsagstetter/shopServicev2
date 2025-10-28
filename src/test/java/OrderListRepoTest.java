@@ -11,19 +11,17 @@ class OrderListRepoTest {
     void getOrders() {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
+        List<Order> expected = new ArrayList<>();
 
         Product product = new Product( "1", "Apfel" );
-        Order newOrder = new Order( "1", List.of( product ) );
+        Order newOrder = new Order( List.of( product ) );
+        expected.add( newOrder );
         repo.addOrder( newOrder );
 
         //WHEN
         List<Order> actual = repo.getOrders();
 
         //THEN
-        List<Order> expected = new ArrayList<>();
-        Product product1 = new Product( "1", "Apfel" );
-        expected.add( new Order( "1", List.of( product1 ) ) );
-
         assertEquals( actual, expected );
     }
 
@@ -33,18 +31,15 @@ class OrderListRepoTest {
         OrderListRepo repo = new OrderListRepo();
 
         Product product = new Product( "1", "Apfel" );
-        Order newOrder = new Order( "1", List.of( product ) );
+        Order newOrder = new Order( List.of( product ) );
         repo.addOrder( newOrder );
 
         //WHEN
         assertDoesNotThrow( () -> {
-            Order actual = repo.getOrderById( "1" )
+            Order actual = repo.getOrderById( newOrder.id() )
                     .orElseThrow( () -> new OrderNotFoundException( newOrder.id() ) );
             //THEN
-            Product product1 = new Product( "1", "Apfel" );
-            Order expected = new Order( "1", List.of( product1 ) );
-
-            assertEquals( actual, expected );
+            assertEquals( actual, newOrder );
         } );
 
     }
@@ -54,18 +49,15 @@ class OrderListRepoTest {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
         Product product = new Product( "1", "Apfel" );
-        Order newOrder = new Order( "1", List.of( product ) );
+        Order newOrder = new Order( List.of( product ) );
 
         //WHEN
-        Order actual = repo.addOrder( newOrder );
+        Order expected = repo.addOrder( newOrder );
 
         //THEN
-        Product product1 = new Product( "1", "Apfel" );
-        Order expected = new Order( "1", List.of( product1 ) );
-        assertEquals( actual, expected );
         assertDoesNotThrow( () -> {
-            Order order = repo.getOrderById( "1" ).orElseThrow( () -> new OrderNotFoundException( "1" ) );
-            assertEquals( order, expected );
+            Order actual = repo.getOrderById( expected.id() ).orElseThrow( () -> new OrderNotFoundException( expected.id() ) );
+            assertEquals( expected, actual );
         } );
     }
 
@@ -90,7 +82,7 @@ class OrderListRepoTest {
         //GIVEN
         OrderListRepo repo = new OrderListRepo();
         Product product = new Product( "1", "Apfel" );
-        Order newOrder = new Order( "1", List.of( product ) );
+        Order newOrder = new Order( List.of( product ) );
         repo.addOrder( newOrder );
 
         //WHEN
@@ -103,7 +95,7 @@ class OrderListRepoTest {
         assertDoesNotThrow( () -> {
             // WHEN
             Order updatedOrder2 = repo.updateOrder( updatedOrder.withId( "2" ).withOrderStatus( OrderStatus.COMPLETED ) );
-            Order foundOrder = repo.getOrderById( updatedOrder2.id() ).orElseThrow( () -> new OrderNotFoundException( "1" ) );
+            Order foundOrder = repo.getOrderById( updatedOrder2.id() ).orElseThrow( () -> new OrderNotFoundException( "2" ) );
             assertEquals( OrderStatus.COMPLETED, foundOrder.orderStatus() );
         } );
     }
