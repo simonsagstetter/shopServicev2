@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ShopService {
     private ProductRepo productRepo = new ProductRepo();
     private OrderRepo orderRepo = new OrderMapRepo();
 
     public Order addOrder( List<String> productIds ) throws ProductNotFoundException {
+
         List<Product> products = new ArrayList<>();
         for ( String productId : productIds ) {
             Product productToOrder = productRepo
@@ -15,8 +15,9 @@ public class ShopService {
 
             products.add( productToOrder );
         }
-
-        Order newOrder = new Order( UUID.randomUUID().toString(), products );
+        // We moved the auto generation for UUID and the creation of the Instant
+        // to a custom constructor inside the Order record class
+        Order newOrder = new Order( products );
 
         return orderRepo.addOrder( newOrder );
     }

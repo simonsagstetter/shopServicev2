@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -18,9 +19,10 @@ class ShopServiceTest {
             Order actual = shopService.addOrder( productsIds );
 
             //THEN
-            Order expected = new Order( "-1", List.of( new Product( "1", "Apfel" ) ) );
+            Order expected = new Order( List.of( new Product( "1", "Apfel" ) ) );
             assertEquals( expected.products(), actual.products() );
             assertNotNull( expected.id() );
+            assertEquals( Instant.class, expected.orderDateTime().getClass() );
 
         } );
 
