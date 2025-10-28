@@ -6,14 +6,13 @@ public class ShopService {
     private ProductRepo productRepo = new ProductRepo();
     private OrderRepo orderRepo = new OrderMapRepo();
 
-    public Order addOrder( List<String> productIds ) {
+    public Order addOrder( List<String> productIds ) throws ProductNotFoundException {
         List<Product> products = new ArrayList<>();
         for ( String productId : productIds ) {
-            Product productToOrder = productRepo.getProductById( productId ).orElse( null );
-            if ( productToOrder == null ) {
-                System.out.println( "Product mit der Id: " + productId + " konnte nicht bestellt werden!" );
-                return null;
-            }
+            Product productToOrder = productRepo
+                    .getProductById( productId )
+                    .orElseThrow( () -> new ProductNotFoundException( productId ) );
+
             products.add( productToOrder );
         }
 
