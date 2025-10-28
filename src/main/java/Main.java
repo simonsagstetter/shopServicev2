@@ -1,0 +1,38 @@
+import java.util.List;
+
+public class Main {
+    public static void main( String[] args ) {
+        OrderRepo orderRepo = new OrderMapRepo();
+        ProductRepo productRepo = new ProductRepo();
+
+        for ( int i = 0; i < 100; i++ ) {
+            productRepo.addProduct(
+                    new Product( String.valueOf( i ), "Product No. " + i )
+            );
+        }
+
+        ShopService shopService = new ShopService( productRepo, orderRepo );
+
+        List<Product> products = productRepo.getProducts();
+
+        try {
+            Order firstOrder = shopService.addOrder( List.of( products.getFirst().id() ) );
+            Order secondOrder = shopService.addOrder( List.of( products.getFirst().id(), products.getLast().id() ) );
+            Order thirdOrder = shopService.addOrder( products.stream().map( Product::id ).toList() );
+        } catch ( ProductNotFoundException error ) {
+            throw new RuntimeException( error );
+        }
+
+        List<Order> newOrders = shopService.getOrdersByOrderStatus( OrderStatus.PROCESSING );
+
+        System.out.printf( "%-50s", "ORDERID" );
+        System.out.printf( "%-10s", "PRODUCTS" );
+        System.out.printf( "%20s%n", "STATUS" );
+
+        for ( Order order : newOrders ) {
+            System.out.printf( "%-50s", order.id() );
+            System.out.printf( "%-10s", order.products().size() );
+            System.out.printf( "%20s%n", order.orderStatus() );
+        }
+    }
+}
