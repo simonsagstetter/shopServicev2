@@ -21,6 +21,14 @@ public class ShopService {
         return orderRepo.addOrder( newOrder );
     }
 
+    public Order updateOrder( String orderId, OrderStatus newOrderStatus ) throws OrderNotFoundException {
+        Order order = orderRepo
+                .getOrderById( orderId )
+                .orElseThrow( () -> new OrderNotFoundException( orderId ) );
+
+        return orderRepo.updateOrder( order.withOrderStatus( newOrderStatus ) );
+    }
+
     public List<Order> getOrdersByOrderStatus( OrderStatus orderStatus ) {
         return this.orderRepo
                 .getOrders()

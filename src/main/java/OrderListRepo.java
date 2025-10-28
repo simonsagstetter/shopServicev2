@@ -1,31 +1,41 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class OrderListRepo implements OrderRepo{
+public class OrderListRepo implements OrderRepo {
     private List<Order> orders = new ArrayList<>();
 
+    @Override
     public List<Order> getOrders() {
         return orders;
     }
 
-    public Order getOrderById(String id) {
-        for (Order order : orders) {
-            if (order.id().equals(id)) {
-                return order;
-            }
-        }
-        return null;
+    @Override
+    public Optional<Order> getOrderById( String id ) {
+        return this.orders
+                .stream()
+                .filter( order -> order.id().equals( id ) )
+                .findFirst();
     }
 
-    public Order addOrder(Order newOrder) {
-        orders.add(newOrder);
+    @Override
+    public Order addOrder( Order newOrder ) {
+        orders.add( newOrder );
         return newOrder;
     }
 
-    public void removeOrder(String id) {
-        for (Order order : orders) {
-            if (order.id().equals(id)) {
-                orders.remove(order);
+    @Override
+    public Order updateOrder( Order updatedOrder ) {
+        this.removeOrder( updatedOrder.id() );
+        this.addOrder( updatedOrder );
+        return updatedOrder;
+    }
+
+    @Override
+    public void removeOrder( String id ) {
+        for ( Order order : orders ) {
+            if ( order.id().equals( id ) ) {
+                orders.remove( order );
                 return;
             }
         }

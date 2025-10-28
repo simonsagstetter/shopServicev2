@@ -1,29 +1,31 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class OrderMapRepo implements OrderRepo{
+public class OrderMapRepo implements OrderRepo {
     private Map<String, Order> orders = new HashMap<>();
 
     @Override
     public List<Order> getOrders() {
-        return new ArrayList<>(orders.values());
+        return new ArrayList<>( orders.values() );
     }
 
     @Override
-    public Order getOrderById(String id) {
-        return orders.get(id);
+    public Optional<Order> getOrderById( String id ) {
+        return Optional.ofNullable( this.orders.get( id ) );
     }
 
     @Override
-    public Order addOrder(Order newOrder) {
-        orders.put(newOrder.id(), newOrder);
+    public Order addOrder( Order newOrder ) {
+        orders.put( newOrder.id(), newOrder );
         return newOrder;
     }
 
     @Override
-    public void removeOrder(String id) {
-        orders.remove(id);
+    public Order updateOrder( Order updatedOrder ) {
+        return this.addOrder( updatedOrder );
+    }
+
+    @Override
+    public void removeOrder( String id ) {
+        orders.remove( id );
     }
 }
