@@ -73,4 +73,35 @@ class ShopServiceTest {
         assertFalse( orders.isEmpty() );
         assertEquals( orders.getFirst(), order.get() );
     }
+
+    @Test
+    void updateOrder_WhenOrderDoesExist_ExpectOrderWithUpdatedOrderStatus() {
+        assertDoesNotThrow( () -> {
+            //GIVEN
+            ShopService shopService = new ShopService();
+            Order order = shopService.addOrder( List.of( "1" ) );
+
+            //WHEN
+            Order updatedOrder = shopService.updateOrder( order.id(), OrderStatus.COMPLETED );
+
+            //THEN
+            assertNotEquals( order, updatedOrder );
+            assertEquals( OrderStatus.COMPLETED, updatedOrder.orderStatus() );
+
+        } );
+    }
+
+    @Test
+    void updateOrder_WhenOrderDoesNotExist_ExpectOrderNotFoundException() {
+        OrderNotFoundException exception = assertThrows( OrderNotFoundException.class, () -> {
+            //GIVEN
+            ShopService shopService = new ShopService();
+
+            //WHEN
+            Order updatedOrder = shopService.updateOrder( "test-id", OrderStatus.COMPLETED );
+        } );
+
+        //THEN
+        assertEquals( exception.getMessage(), new OrderNotFoundException( "test-id" ).getMessage() );
+    }
 }
