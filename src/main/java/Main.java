@@ -1,3 +1,4 @@
+import exceptions.OrderNotFoundException;
 import exceptions.ProductNotFoundException;
 import models.Order;
 import models.OrderStatus;
@@ -8,6 +9,7 @@ import repositories.ProductRepo;
 import services.ShopService;
 
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main( String[] args ) {
@@ -42,6 +44,21 @@ public class Main {
             System.out.printf( "%-50s", order.id() );
             System.out.printf( "%-10s", order.products().size() );
             System.out.printf( "%20s%n", order.orderStatus() );
+        }
+
+        System.out.println();
+
+        try {
+            Order updatedOrder = shopService.updateOrder( newOrders.getFirst().id(), OrderStatus.COMPLETED );
+        } catch ( OrderNotFoundException e ) {
+            throw new RuntimeException( e );
+        }
+
+        Map<OrderStatus, Order> oldestOrderByStatusMap = shopService.getOldestOrderPerStatus();
+
+        for ( Map.Entry<OrderStatus, Order> entry : oldestOrderByStatusMap.entrySet() ) {
+            System.out.printf( "%s%n", "Oldest order with status " + entry.getKey() );
+            System.out.printf( "%s%n%n", entry.getValue() );
         }
     }
 }

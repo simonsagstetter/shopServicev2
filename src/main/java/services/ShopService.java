@@ -9,8 +9,8 @@ import repositories.OrderMapRepo;
 import repositories.OrderRepo;
 import repositories.ProductRepo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 
@@ -55,5 +55,20 @@ public class ShopService {
                 .stream()
                 .filter( order -> order.orderStatus().equals( orderStatus ) )
                 .toList();
+    }
+
+    public Map<OrderStatus, Order> getOldestOrderPerStatus() {
+        return this.orderRepo
+                .getOrders()
+                .stream()
+                .collect(
+                        Collectors.groupingBy(
+                                Order::orderStatus,
+                                Collectors.collectingAndThen(
+                                        Collectors.minBy( Comparator.comparing( Order::orderDateTime ) ),
+                                        opt -> opt.orElse( null )
+                                )
+                        )
+                );
     }
 }
