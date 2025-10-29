@@ -1,5 +1,6 @@
+package repositories;
+
 import models.Product;
-import repositories.ProductRepo;
 
 import java.util.ArrayList;
 import java.util.List;

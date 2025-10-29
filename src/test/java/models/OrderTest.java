@@ -1,6 +1,5 @@
-import models.Order;
-import models.OrderStatus;
-import models.Product;
+package models;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
