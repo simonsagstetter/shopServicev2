@@ -1,8 +1,18 @@
-import lombok.RequiredArgsConstructor;
+package services;
+
+import models.Order;
+import models.OrderStatus;
+import models.Product;
+import exceptions.OrderNotFoundException;
+import exceptions.ProductNotFoundException;
+import repositories.OrderMapRepo;
+import repositories.OrderRepo;
+import repositories.ProductRepo;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ShopService {
@@ -25,7 +35,7 @@ public class ShopService {
             products.add( productToOrder );
         }
         // We moved the auto generation for UUID and the creation of the Instant
-        // to a custom constructor inside the Order record class
+        // to a custom constructor inside the models.Order record class
         Order newOrder = new Order( products );
 
         return orderRepo.addOrder( newOrder );

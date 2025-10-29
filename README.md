@@ -11,6 +11,15 @@ Bonus: [Check pull request #12](https://github.com/simonsagstetter/shopServicev2
 ## Basic Usage
 
 ```java
+import exceptions.ProductNotFoundException;
+import models.Order;
+import models.OrderStatus;
+import models.Product;
+import repositories.OrderMapRepo;
+import repositories.OrderRepo;
+import repositories.ProductRepo;
+import services.ShopService;
+
 import java.util.List;
 
 public class Main {
@@ -20,7 +29,7 @@ public class Main {
 
         for ( int i = 0; i < 100; i++ ) {
             productRepo.addProduct(
-                    new Product( String.valueOf( i ), "Product No. " + i )
+                    new Product( String.valueOf( i ), "models.Product No. " + i )
             );
         }
 
