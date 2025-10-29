@@ -6,7 +6,7 @@
 
 Required: [Check pull request #2, #4, #6, #8, #10](https://github.com/simonsagstetter/shopServicev2/pulls?q=is%3Apr)
 
-Bonus: [Check pull request #12](https://github.com/simonsagstetter/shopServicev2/pulls?q=is%3Apr)
+Bonus: [Check pull request #12, #14](https://github.com/simonsagstetter/shopServicev2/pulls?q=is%3Apr)
 
 ## Basic Usage
 
