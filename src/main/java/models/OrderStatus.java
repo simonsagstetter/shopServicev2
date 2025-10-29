@@ -1,3 +1,5 @@
+package models;
+
 public enum OrderStatus {
     PROCESSING,
     IN_DELIVERY,

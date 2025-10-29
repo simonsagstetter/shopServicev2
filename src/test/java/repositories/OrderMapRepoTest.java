@@ -1,17 +1,22 @@
+package repositories;
+
+import exceptions.OrderNotFoundException;
+import models.Order;
+import models.OrderStatus;
+import models.Product;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class OrderListRepoTest {
+class OrderMapRepoTest {
 
     @Test
     void getOrders() {
         //GIVEN
-        OrderListRepo repo = new OrderListRepo();
-        List<Order> expected = new ArrayList<>();
+        OrderMapRepo repo = new OrderMapRepo();
+        List<Order> expected = repo.getOrders();
 
         Product product = new Product( "1", "Apfel" );
         Order newOrder = new Order( List.of( product ) );
@@ -28,7 +33,7 @@ class OrderListRepoTest {
     @Test
     void getOrderById() {
         //GIVEN
-        OrderListRepo repo = new OrderListRepo();
+        OrderMapRepo repo = new OrderMapRepo();
 
         Product product = new Product( "1", "Apfel" );
         Order newOrder = new Order( List.of( product ) );
@@ -38,16 +43,16 @@ class OrderListRepoTest {
         assertDoesNotThrow( () -> {
             Order actual = repo.getOrderById( newOrder.id() )
                     .orElseThrow( () -> new OrderNotFoundException( newOrder.id() ) );
+
             //THEN
             assertEquals( actual, newOrder );
         } );
-
     }
 
     @Test
     void addOrder() {
         //GIVEN
-        OrderListRepo repo = new OrderListRepo();
+        OrderMapRepo repo = new OrderMapRepo();
         Product product = new Product( "1", "Apfel" );
         Order newOrder = new Order( List.of( product ) );
 
@@ -65,7 +70,7 @@ class OrderListRepoTest {
     void removeOrder() {
         OrderNotFoundException exception = assertThrows( OrderNotFoundException.class, () -> {
             //GIVEN
-            OrderListRepo repo = new OrderListRepo();
+            OrderMapRepo repo = new OrderMapRepo();
 
             //WHEN
             repo.removeOrder( "1" );
@@ -80,7 +85,7 @@ class OrderListRepoTest {
     @Test
     void updateOrder() {
         //GIVEN
-        OrderListRepo repo = new OrderListRepo();
+        OrderMapRepo repo = new OrderMapRepo();
         Product product = new Product( "1", "Apfel" );
         Order newOrder = new Order( List.of( product ) );
         repo.addOrder( newOrder );
@@ -99,4 +104,5 @@ class OrderListRepoTest {
             assertEquals( OrderStatus.COMPLETED, foundOrder.orderStatus() );
         } );
     }
+
 }

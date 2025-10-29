@@ -1,4 +1,8 @@
+package models;
+
 import lombok.With;
+import repositories.OrderRepo;
+import services.IdService;
 
 import java.time.Instant;
 import java.util.List;
@@ -23,6 +27,6 @@ public record Order(
 ) {
 
     public Order( List<Product> products ) {
-        this( UUID.randomUUID().toString(), products, OrderStatus.PROCESSING, Instant.now() );
+        this( IdService.generateIdFor( Order.class ), products, OrderStatus.PROCESSING, Instant.now() );
     }
 }
