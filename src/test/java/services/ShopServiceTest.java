@@ -6,12 +6,15 @@ import models.Order;
 import models.OrderStatus;
 import models.Product;
 import org.junit.jupiter.api.Test;
+import repositories.ProductRepo;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ShopServiceTest {
 
@@ -112,5 +115,42 @@ class ShopServiceTest {
 
         //THEN
         assertEquals( exception.getMessage(), new OrderNotFoundException( "test-id" ).getMessage() );
+    }
+
+    @Test
+    void getOldestOrderPerStatus_ShouldReturnEmptyMap_WhenNoOrdersInOrderRepo() {
+        //GIVEN
+        ShopService shopService = new ShopService();
+
+        //WHEN
+        Map<OrderStatus, Order> actual = shopService.getOldestOrderPerStatus();
+
+        //THEN
+        assertTrue( actual.isEmpty() );
+    }
+
+    @Test
+    void getOldestOrderPerStatus_ShouldReturnMapWithOrderStatusAndOrdes_WhenOrdersInOrderRepo() {
+        //GIVEN
+        ProductRepo productRepo = new ProductRepo();
+        productRepo.addProduct( new Product( "Test Product" ) );
+        ShopService shopService = new ShopService();
+
+        assertDoesNotThrow( () -> {
+            Order newOrder = shopService.addOrder( List.of( productRepo.getProducts().getFirst().id() ) );
+
+            //WHEN
+            Map<OrderStatus, Order> actual = shopService.getOldestOrderPerStatus();
+
+            //THEN
+            assertThat( actual.keySet() )
+                    .isNotEmpty()
+                    .contains( OrderStatus.PROCESSING );
+
+            assertThat( actual.values() )
+                    .isNotEmpty()
+                    .contains( newOrder );
+
+        } );
     }
 }
