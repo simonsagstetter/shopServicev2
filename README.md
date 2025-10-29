@@ -8,6 +8,10 @@ Required: [Check pull request #2, #4, #6, #8, #10](https://github.com/simonsagst
 
 Bonus: [Check pull request #12, #14, #16](https://github.com/simonsagstetter/shopServicev2/pulls?q=is%3Apr)
 
+## Schema Overview
+
+![bonus-schema.png](.github/resources/schema.png)
+
 ## Basic Usage
 
 ```java
